@@ -37,6 +37,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
     setFile(null)
   },[selectedChat])
 
+  
   //  socket use effect
   useEffect(()=>{
 
@@ -47,7 +48,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
 
     const onButtonClick = () => {
-      console.log("Button click")
      inputFile.current.click();
     };
 
@@ -65,7 +65,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
         setLoading(true)
 
         const{data}=await axios.get(`/api/message/${selectedChat._id}`,config)
-        console.log("fetch : ",data)
 
         setMessages(data)
         setLoading(false)
@@ -108,7 +107,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
           chatId:selectedChat._id
         },config)
 
-        console.log("msg : ",data)
         
         socket.emit("new message",data)
         setFetchAgain(!fetchAgain)
@@ -150,7 +148,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
             
             data={...data,content:newContent}
             
-            console.log(data)
             
           socket.emit("new message",data)
           setMessages([...messages,data])
@@ -158,7 +155,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
       }catch(error)
       {
-        console.log(error)
           toast({
               title:"Error Occured",
               description:"Not able to send",
@@ -176,7 +172,6 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
     
     useEffect(()=>{
       socket.on('messages recieved',(newMsgRecieved)=>{
-        console.log("messages recieve  : ",newMsgRecieved)
         setFetchAgain(!fetchAgain)
         if(!selectedChatCompare||selectedChatCompare._id !== newMsgRecieved.chat._id){
           

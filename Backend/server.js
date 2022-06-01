@@ -43,7 +43,7 @@ app.post('/api/invite',protect,(req,res)=>{
         subject: "Chat App Invite", // Subject line
         html:`<h3>Chat App Invite</h3>
             <span>Please click in the below link to register in Chat App</span>
-            <a href="http://localhost:3000" method=GET>link text</a>
+            <a href="${process.env.URL}" method=GET>link text</a>
         `
       },(error,data)=>{
           if(error)

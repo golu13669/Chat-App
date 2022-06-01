@@ -6,7 +6,6 @@ const axios=require('axios')
 const SignUp = () => {
 
     const [name,setname]=useState()
-    // const [lname,setLname]=useState('')
     const [email,setEmail]=useState()
     const [confirmPassword,setConfirmPassword]=useState()
     const [password,setPassword]=useState()
@@ -133,13 +132,6 @@ const SignUp = () => {
                 onChange={(e)=>{setname(e.target.value)}}
             ></Input>
         </FormControl>
-        {/* <FormControl id='last-name'>
-            <FormLabel>Last name</FormLabel>
-            <Input 
-                placeholder='Enter Your Last Name'
-                onChange={(e)=>{setLname(e.target.value)}}
-            ></Input>
-        </FormControl> */}
         <FormControl id='email' isRequired>
             <FormLabel>Email</FormLabel>
             <Input 

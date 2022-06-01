@@ -1,15 +1,15 @@
 import { AddIcon } from '@chakra-ui/icons'
 import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import { getSender } from '../Config/ChatLogics'
 import { useChatState } from '../Context/ChatProvider'
 import ChatLoading from './ChatLoading'
 import GroupChatModal from './miscellaneous/GroupChatModal'
 
-const MyChats = ({fetchAgain}) => {
+const MyChats = ({fetchAgain,loggedUser}) => {
   
-  const [loggedUser,setLoggedUser]=useState()
+  // const [loggedUser,setLoggedUser]=useState()
   const {user,selectedChat,setSelectedChat,chats,setChats}=useChatState()
 
   const toast=useToast()
@@ -24,7 +24,6 @@ const MyChats = ({fetchAgain}) => {
       }
 
       const {data}= await axios.get(`/api/chat`,config)
-
       setChats(data)
       
     } catch (error) {
@@ -40,10 +39,10 @@ const MyChats = ({fetchAgain}) => {
   }
 
   useEffect(()=>{
-    setLoggedUser(JSON.parse(localStorage.getItem('userInfo')))
     chatFetch()
     // eslint-disable-next-line
   },[fetchAgain])
+  
 
   return (
     <Box

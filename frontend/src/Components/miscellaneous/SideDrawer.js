@@ -8,13 +8,11 @@ import { useNavigate } from 'react-router-dom'
 import ChatLoading from '../ChatLoading'
 import UserListItem from '../UserAvatar/UserListItem'
 import InviteModal from './InviteModal'
-// import { getSender } from '../../Config/ChatLogics'
-// import NotificationBadge from 'react-notification-badge';
-// import {Effect} from 'react-notification-badge';
+
 
 const SideDrawer = () => {
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {isOpen, onOpen, onClose } = useDisclosure()
   const[search,setSearch]=useState("")
   const[searchResult,setSearchResult]=useState([])
   const[loading,setLoading]=useState(false)
@@ -72,7 +70,6 @@ const SideDrawer = () => {
   const accesschat=async(userID)=>{
     try {
       setLoadingChat(true)
-
       const config={
       headers:{
         "Content-type":"Application/json",
@@ -83,11 +80,13 @@ const SideDrawer = () => {
       const {data}=await axios.post('/api/chat',{userID},config)
 
       if(!chats.find((c)=>c._id===data._id)){
-        setChats(data,...chats)
+        setChats([data[0],...chats])
+        console.log("sidedrawer chats : " ,chats)
       }
-      setSelectedChat(data)
+      console.log("data :",data[0])
+      setSelectedChat(data[0])
       setLoadingChat(false)
-      onClose() //close the side drawer
+      onClose() 
       
     } catch (error) {
       toast({
@@ -138,33 +137,6 @@ const SideDrawer = () => {
         </Text>
         <div>
           <InviteModal/>
-          {/* <Menu>
-            <MenuButton p={1}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
-              <Badge variant="solid" bg="red" borderRadius='1000000px'>
-                {notification.length===0?"":notification.length}
-              </Badge>
-            </MenuButton>
-              <MenuList pl={2}>
-                {console.log("Notification length: ",notification.length+" notification : "+notification)}
-                {!notification.length && "No New Messages"}
-                {notification.map((notif) => (
-                  <MenuItem
-                    key={notif._id}
-                    onClick={() => {
-                      setSelectedChat(notif.chat);
-                      setNotification(notification.filter((n) => n !== notif));
-                    }}>
-                    {notif.chat.isGroupChat
-                      ? `New Message in ${notif.chat.chatName}`
-                      : `New Message from ${getSender(user, notif.chat.users)}`}
-                    </MenuItem>
-                  ))}
-              </MenuList>
-          </Menu> */}
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon/>} ml={4}>
               <Avatar size='sm' cursor='pointer' name={user.name} src={user.pic}/>
