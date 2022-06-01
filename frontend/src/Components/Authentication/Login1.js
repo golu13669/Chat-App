@@ -2,7 +2,6 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, u
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Forget from './Forget';
 
 const Login = () => {
 
@@ -71,7 +70,7 @@ const Login = () => {
 
   return (
     <VStack spacing='5px'>
-      <FormControl id='email' isRequired>
+      <FormControl id='email1' isRequired>
             <FormLabel>Email</FormLabel>
             <Input 
                 placeholder='Enter Your Email'
@@ -79,7 +78,7 @@ const Login = () => {
                 onChange={(e)=>{setEmail(e.target.value)}}
             ></Input>
         </FormControl>
-        <FormControl id='password' isRequired>
+        <FormControl id='password1' isRequired>
             <FormLabel>Password</FormLabel>
             <InputGroup>
             <Input
@@ -106,15 +105,15 @@ const Login = () => {
         onClick={submitHanlder}>
             Login
         </Button>
-        <Forget>
-      <Button
-        variant="solid"
-        colorScheme="red"
-        width="100%"
-      >
-        Forgot Password!
-      </Button>
-      </Forget>
+        <Button
+        colorScheme='red'
+        width='100%'
+        onClick={()=>{
+          setEmail('guest@example.com')
+          setPassword('123456')
+        }}>
+            Get Guest User Credentials
+        </Button>
     </VStack>
   )
 }

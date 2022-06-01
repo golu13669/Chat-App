@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import ChatLoading from '../ChatLoading'
 import UserListItem from '../UserAvatar/UserListItem'
 import InviteModal from './InviteModal'
+import Passchange from './Passchange'
 
 
 const SideDrawer = () => {
@@ -146,6 +147,10 @@ const SideDrawer = () => {
                 <MenuItem>My Profile</MenuItem>
               </ProfileModel>
               <MenuDivider/>
+              <Passchange user={user}> 
+              <MenuItem >Change Password</MenuItem>
+              </Passchange> 
+              <MenuDivider/>
               <MenuItem onClick={logoutHandler}>Log Out</MenuItem>
             </MenuList>
           </Menu>
@@ -163,7 +168,6 @@ const SideDrawer = () => {
                 mr={2}
                 value={search}
                 onChange={(e)=>{setSearch(e.target.value)}}
-                // onKeyDown={handleKeyPress}
                 onKeyPress={handleKeyPress}
               />
               <Button onClick={handleSearch} >

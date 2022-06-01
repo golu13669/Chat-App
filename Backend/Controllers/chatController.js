@@ -1,4 +1,5 @@
 const Asynchandler=require('express-async-handler')
+const transporter= require('../Config/Nodemailer')
 const Chat=require('../Models/chatModel')
 const User = require('../Models/userModel')
 
@@ -186,11 +187,43 @@ const removeFromGroup=Asynchandler(async(req,res)=>{
     }
 })
 
+
+const invite=Asynchandler(async(req,res)=>{
+    const email=req.body.email
+    console.log(email)
+
+    transporter.sendMail({
+        from: '"Chat App" <devtestmern32@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "Chat App Invite", // Subject line
+        html:`<h3>Chat App Invite</h3>
+            <span>Please click in the below link to register in Chat App</span>
+            <a href="${process.env.URL}">link text</a>
+        `
+      },(error,data)=>{
+          if(error)
+          {
+            console.log("Error occured : ",error)
+            res.status(400)
+            throw new Error(error)
+          }
+
+          res.json({
+              Status:"Success"
+          })
+
+          console.log("Email sent : ",data.response)
+      });
+    
+      
+})
+
 module.exports={
     accessChat,
     fetchChat,
     createGroupChat,
     renameGroup,
     addToGroup,
-    removeFromGroup
+    removeFromGroup,
+    invite
 }

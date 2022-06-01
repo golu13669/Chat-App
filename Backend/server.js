@@ -9,6 +9,8 @@ const dotenv=require('dotenv')
 const nodemailer=require('nodemailer')
 const {protect}=require('./Middleware/authMiddleware')
 const{notFound,errorHandler}=require('./Middleware/errorMiddleware')
+const path=require('path')
+const { transporter } = require('./Config/Nodemailer')
 
 
 dbConnect( )
@@ -23,45 +25,20 @@ app.use('/api/user',UserRoute)
 app.use('/api/chat',ChatRoute)
 app.use('/api/message',MessageRoute)
 
-//send invite
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.user, // generated ethereal user
-      pass: process.env.password, // generated ethereal password
-    },
-});
+//---------------------Deployment------------------------
 
-app.post('/api/invite',protect,(req,res)=>{
-    const email=req.body.email
+const _dirname1=path.resolve()
+if(process.env.NODE_ENV==='production')
+{
+    app.use(express.static(path.join(_dirname1,"/frontend/build")))
+}else{
+    app.get('/',(req,res)=>{
+        res.send("API is running successfully")
+    })
+}
 
-    transporter.sendMail({
-        from: '"Chat App" <devtestmern32@gmail.com>', // sender address
-        to: email, // list of receivers
-        subject: "Chat App Invite", // Subject line
-        html:`<h3>Chat App Invite</h3>
-            <span>Please click in the below link to register in Chat App</span>
-            <a href="${process.env.URL}" method=GET>link text</a>
-        `
-      },(error,data)=>{
-          if(error)
-          {
-            res.status(400)
-            throw new Error(error)
-          }
-        //   console.log("Error occured : ",error)
+//---------------------Deployment------------------------
 
-          res.json({
-              Status:"Success"
-          })
-
-        //   console.log("Email sent : ",data.response)
-      });
-    
-      
-})
 
 app.use(notFound)
 app.use(errorHandler)
@@ -70,8 +47,6 @@ app.use(errorHandler)
 const server=app.listen(port,()=>{
     console.log(`server is running on port ${port}`.yellow.bold)
 })
-
-
 
 //start socket.io
 

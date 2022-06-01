@@ -18,7 +18,7 @@ const InviteModal = () => {
             Authorization:`Bearer ${user.token}`
           }
         }
-        const response= await axios.post('/api/invite',{
+        const response= await axios.post('/api/chat/invite',{
             email:invite
         },config)
         console.log(response.data)
