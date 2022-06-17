@@ -1,8 +1,9 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+// import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Button, Modal, Text,ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, IconButton, Input, useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useChatState } from '../../Context/ChatProvider';
+import validator from 'validator';
 
 const InviteModal = () => {
     const {isOpen, onOpen, onClose } = useDisclosure()
@@ -13,6 +14,34 @@ const InviteModal = () => {
 
     const sendInvite=async()=>{
       try{
+        if(invite==='')
+        {
+          toast({
+            title:"Email Invalid",
+            description:"Please enter the email",
+            status:"warning",
+            duration:3000,
+            isClosable:true,
+            position:"bottom"
+          })
+  
+          return;
+        }
+
+        if(!validator.isEmail(invite))
+        {
+          toast({
+            title:"Email invalid",
+            description:"Email is not valid",
+            status:"warning",
+            duration:5000,
+            isClosable:true,
+            position:"bottom"
+          })
+  
+          return;
+        }
+        
         const config={
         headers:{
             Authorization:`Bearer ${user.token}`
@@ -21,7 +50,7 @@ const InviteModal = () => {
         const response= await axios.post('/api/chat/invite',{
             email:invite
         },config)
-        console.log(response.data)
+
         if(response.data.Status==="Success")
         {
           toast({
@@ -33,6 +62,8 @@ const InviteModal = () => {
             position:"bottom"
           })
         }
+
+        setInvite("")
       }
     catch(error){
       console.log(error)
@@ -49,7 +80,7 @@ const InviteModal = () => {
 
   return (
     <>
-      <IconButton onClick={onOpen} icon={<ExternalLinkIcon/>}/>
+      <IconButton onClick={onOpen} icon={<i className="fas fa-share"/>}/>
 
       <Modal size='lg' isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

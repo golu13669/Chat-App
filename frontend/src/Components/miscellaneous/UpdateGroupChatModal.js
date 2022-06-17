@@ -47,11 +47,12 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
             }
             ,config)
 
-            console.log(data)
+            // console.log(data)
 
             setLoading(false)
             setSelectedChat(data)
             setFetchAgain(!fetchAgain)
+            setSearchResult([])
 
         } catch (error) {
             toast({
@@ -67,7 +68,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
     }
 
     const handleRemove=async(userToRemove)=>{
-        if(selectedChat.groupAdmin._id!==user._id&&userToRemove._id!==user.Id)
+        if(selectedChat.groupAdmin._id!==user._id&&userToRemove._id!==user._id)
         {
             toast({
                 title:"Only Admin can remove someone",
@@ -94,8 +95,6 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
                 userId:userToRemove._id
             }
             ,config)
-
-            console.log(data)
 
             userToRemove._id===user._id?setSelectedChat():setSelectedChat(data)
             setLoading(false)
@@ -135,7 +134,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
             }
             ,config)
 
-            console.log(data)
+            // console.log(data)
             setSelectedChat(data)
             setFetchAgain(!fetchAgain)
             setRenameLoading(false)
@@ -170,7 +169,6 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
             }
 
             const{data}=await axios.get(`/api/user?search=${search}`,config)
-            // console.log(data)
             setLoading(false)
             setSearchResult(data)
 
@@ -186,7 +184,6 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
             setLoading(false)
         }
     }
-
 
   return (
       <>
@@ -209,7 +206,11 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
             <ModalBody>
                 <Box  d='flex' flexWrap='wrap' w={"100%"} pb={3}>
                     {selectedChat.users.map(user=>(
-                        <UserBadgeItem key={user._id} user={user}
+                        selectedChat.groupAdmin._id===user._id?
+                        <UserBadgeItem key={user._id} admin user={user}
+                        handleFunction={()=>handleRemove(user)}/>
+                        :
+                        <UserBadgeItem key={user._id}user={user}
                         handleFunction={()=>handleRemove(user)}/>
                     ))}
                 </Box>

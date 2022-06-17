@@ -3,7 +3,7 @@ import { useChatState } from '../Context/ChatProvider'
 import { Box,FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react'
 import { ArrowBackIcon, AttachmentIcon } from '@chakra-ui/icons'
 import { getSender,getSenderFull } from '../Config/ChatLogics'
-import ProfileModel from '../Components/miscellaneous/ProfileModel'
+import ProfileModel from './miscellaneous/ProfileModel'
 import UpdateGroupChatModal from './miscellaneous/UpdateGroupChatModal'
 import axios from 'axios'
 import './styles.css'
@@ -12,9 +12,7 @@ import {Buffer} from 'buffer';
 import io from 'socket.io-client'
 import FilePreview from './FileModal/FilePreview'
 
-const ENDPOINT=["http://localhost:4000"]
 var socket,selectedChatCompare;
-
 
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
@@ -40,10 +38,11 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   
   //  socket use effect
   useEffect(()=>{
-
-    socket=io.connect(ENDPOINT)
+    socket=io(`http://${window.location.hostname}:8000`)
     socket.emit('setup',user)
-    // eslint-disable-next-line 
+
+    return ()=> socket.close();
+    //eslint-disable-next-line
   },[])
 
 
@@ -164,7 +163,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
               position:"bottom"
             })
       }
-  }
+    }
 
     const typingHandler=(e)=>{
       setNewMessage(e.target.value)

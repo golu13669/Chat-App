@@ -2,7 +2,7 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, u
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Forget from './Forget';
+
 
 const Login = () => {
 
@@ -106,7 +106,7 @@ const Login = () => {
         onClick={submitHanlder}>
             Login
         </Button>
-        <Forget>
+        {/* <Forget>
       <Button
         variant="solid"
         colorScheme="red"
@@ -114,7 +114,7 @@ const Login = () => {
       >
         Forgot Password!
       </Button>
-      </Forget>
+      </Forget> */}
     </VStack>
   )
 }

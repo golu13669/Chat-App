@@ -2,7 +2,7 @@ import { CloseIcon } from '@chakra-ui/icons'
 import { Box } from '@chakra-ui/react'
 import React from 'react'
 
-const UserBadgeItem = ({user,handleFunction}) => {
+const UserBadgeItem = ({user,admin,handleFunction}) => {
   return (
     <Box
         px={2}
@@ -13,7 +13,7 @@ const UserBadgeItem = ({user,handleFunction}) => {
         // variant='solid'
         fontSize={12}
         color='white'
-        bg='purple'
+        bg={admin?'green':'purple'}
         cursor='pointer'
         onClick={handleFunction}
     >

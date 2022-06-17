@@ -1,12 +1,12 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, useToast, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import{useNavigate} from 'react-router-dom'
+import { schema } from '../../Config/PasswordSchema';
 const axios=require('axios')
 
 const SignUp = () => {
 
     const [name,setname]=useState()
-    // const [lname,setLname]=useState('')
     const [email,setEmail]=useState()
     const [confirmPassword,setConfirmPassword]=useState()
     const [password,setPassword]=useState()
@@ -20,7 +20,7 @@ const SignUp = () => {
 
     const handleClick = () => setShow(!show)
     const handleClickConfirm = () => setShowConfirm(!showConfirm)
-
+    
     const postDetails=(pics)=>{
         setLoading(true)
         if(pics===undefined)
@@ -41,14 +41,14 @@ const SignUp = () => {
             data.append("file",pics)
             data.append("upload_preset","chat-app");
             data.append("cloud_name","dkij14ph5");
-
+            
             fetch('https://api.cloudinary.com/v1_1/dkij14ph5/image/upload',{
                 method:'post',
                 body:data,
             })
             .then((res)=>res.json())
             .then((data)=>{
-                // console.log(data)
+
                 setPic(data.url.toString())
                 setLoading(false)
             })
@@ -61,6 +61,7 @@ const SignUp = () => {
     
     const submitHanlder=async()=>{
         setLoading(true)
+
         if(!name||!email|!password||!confirmPassword)
         {
             toast({
@@ -74,10 +75,26 @@ const SignUp = () => {
             return;
         }
 
+       
+
         if(password!==confirmPassword)
         {
             toast({
                 title:"Password Do Not Match",
+                status:"warning",
+                duration:5000,
+                isClosable:true,
+                position:"bottom"
+            })
+            setLoading(false)
+            return;
+        }
+
+        if(schema.validate(password)===false)
+        {
+            const mesg = schema.validate(password, { details: true })
+            toast({
+                title:mesg[0].message,
                 status:"warning",
                 duration:5000,
                 isClosable:true,
@@ -95,7 +112,6 @@ const SignUp = () => {
             }
 
             const {data}=await axios.post('/api/user',{name,email,password,pic},config)
-            console.log(data)
 
             toast({
                 title:"Registration Successful",
@@ -119,6 +135,7 @@ const SignUp = () => {
                 isClosable:true,
                 position:"bottom"
             }); 
+            console.log(error.response)
 
             setLoading(false)
         }
@@ -126,28 +143,21 @@ const SignUp = () => {
 
   return (
     <VStack spacing='5px'>
-        <FormControl id='first-name' isRequired>
+        <FormControl id='first-name-signup' isRequired>
             <FormLabel>First name</FormLabel>
             <Input 
                 placeholder='Enter Your Name'
                 onChange={(e)=>{setname(e.target.value)}}
             ></Input>
         </FormControl>
-        {/* <FormControl id='last-name'>
-            <FormLabel>Last name</FormLabel>
-            <Input 
-                placeholder='Enter Your Last Name'
-                onChange={(e)=>{setLname(e.target.value)}}
-            ></Input>
-        </FormControl> */}
-        <FormControl id='email' isRequired>
+        <FormControl id='email-signup' isRequired>
             <FormLabel>Email</FormLabel>
             <Input 
                 placeholder='Enter Your Email'
                 onChange={(e)=>{setEmail(e.target.value)}}
             ></Input>
         </FormControl>
-        <FormControl id='password' isRequired>
+        <FormControl id='password-signup' isRequired>
             <FormLabel>Password</FormLabel>
             <InputGroup>
             <Input 

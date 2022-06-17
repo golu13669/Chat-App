@@ -11,7 +11,7 @@ router.post('/login',authUser);
 router.put('/changepass' ,protect,changePass);
 
 //password forget through email
-router.post('/userResetPass', useremailAndpass);
-router.post('/user/reset/:id/:token' ,userEmailPass);
+// router.post('/userResetPass', useremailAndpass);
+// router.post('/user/reset/:id/:token' ,userEmailPass);
 
 module.exports=router

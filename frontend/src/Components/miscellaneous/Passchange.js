@@ -1,14 +1,16 @@
 import React ,{useState} from 'react';
  import {useDisclosure} from  '@chakra-ui/hooks'
-import { Button, FormControl, FormHelperText, FormLabel, IconButton, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
-     ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
+     ModalHeader, ModalOverlay} from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 import  axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import {useNavigate} from "react-router-dom"
+import { schema } from '../../Config/PasswordSchema';
 
 const Passchange = ({children , user}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [show, setShow] = useState(false)
 
     const [pass , setpass] =useState({password : "" , cpassword : ""})
     const navigate = useNavigate();
@@ -20,10 +22,11 @@ const Passchange = ({children , user}) => {
         let name =  e.target.name;
         setpass({...pass,[name] :value});
     }
+
+    const handleClick = () => setShow(!show)
     
     const passHandle= async()=>{ 
         const { password , cpassword} =pass;
-        // console.log( "password deatils" ,password , cpassword)
         if(!password || !cpassword){
             toast({
                 title: "Enter NEW PASSWORD",
@@ -35,6 +38,18 @@ const Passchange = ({children , user}) => {
               return
         }
         else if(password === cpassword){
+          if(schema.validate(password)===false)
+          {
+              const mesg = schema.validate(password, { details: true })
+              toast({
+                  title:mesg[0].message,
+                  status:"warning",
+                  duration:5000,
+                  isClosable:true,
+                  position:"bottom"
+              })
+              return;
+          }
 
           try {
             console.log(user.token);
@@ -71,7 +86,8 @@ const Passchange = ({children , user}) => {
           duration: 2000,
           isClosable: true,
         })
-        return }
+        return 
+      }
     }
     
   return (
@@ -90,8 +106,13 @@ const Passchange = ({children , user}) => {
      >
                 <FormControl>
             <FormLabel htmlFor='pass'>New Password</FormLabel>
-            <Input id='text' name='password'  value={pass.password} onChange={handlevalue} type='password' />
-            <FormHelperText>We'll never share your password.</FormHelperText>
+              <Input id='text' name='password' type={show?'text':'password'} value={pass.password} onChange={handlevalue} />
+              <FormHelperText>We'll never share your password.</FormHelperText>
+              <InputRightElement width="4.5rem">
+                <Button h='1.75rem' size='xs' onClick={handleClick}>
+                {show? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
             </FormControl>
             <FormControl>
             <FormLabel htmlFor='pass'>Re-Password</FormLabel>

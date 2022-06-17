@@ -2,6 +2,9 @@ const Asynchandler=require('express-async-handler')
 const transporter= require('../Config/Nodemailer')
 const Chat=require('../Models/chatModel')
 const User = require('../Models/userModel')
+const dotenv=require('dotenv')
+
+dotenv.config()
 
 //To access or create a new chat -POST method
 const accessChat=Asynchandler(async(req,res)=>{
@@ -26,17 +29,17 @@ const accessChat=Asynchandler(async(req,res)=>{
         select:'name picture email'
     })
 
-    console.log("isChat : ",isChat)
-
     if(isChat.length>0)
     {
         res.send(isChat[0])
-    }else{
+    }
+    else
+    {
         var chatData={
             chatName:'sender',
             isGroupChat:false,
             users:[
-                req.user.id,  //this should be first cause the chatlogics in frontend work accd to this
+                req.user.id, 
                 userID
             ]
         }
@@ -190,7 +193,7 @@ const removeFromGroup=Asynchandler(async(req,res)=>{
 
 const invite=Asynchandler(async(req,res)=>{
     const email=req.body.email
-    console.log(email)
+    // console.log(email)
 
     transporter.sendMail({
         from: '"Chat App" <devtestmern32@gmail.com>', // sender address

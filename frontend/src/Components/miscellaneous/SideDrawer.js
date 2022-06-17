@@ -29,6 +29,8 @@ const SideDrawer = () => {
   const logoutHandler=()=>{
     localStorage.removeItem('userInfo')
     navigate('/')
+    // console.log(chats)
+    setSelectedChat('')
   }
 
   const handleSearch=async()=>{
