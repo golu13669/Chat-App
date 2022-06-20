@@ -11,11 +11,12 @@ const protect=Asynchandler(async(req,res,next)=>{
     ){
         try{
             token=req.headers.authorization.split(' ')[1]
+            req.token=token
             //decode token ID
             const decoded=jwt.verify(token,process.env.JWT_SECRET)
 
-            req.user=await User.findById(decoded.id).select("-password") //return without the password 
-          
+            req.user=await User.findById(decoded._id).select("-password") //return without the password 
+
             next();
         }
         catch(err){

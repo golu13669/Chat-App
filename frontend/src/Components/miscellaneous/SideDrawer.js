@@ -26,11 +26,42 @@ const SideDrawer = () => {
   const navigate=useNavigate()
   const toast=useToast();
 
-  const logoutHandler=()=>{
-    localStorage.removeItem('userInfo')
-    navigate('/')
-    // console.log(chats)
-    setSelectedChat('')
+  const logoutHandler=async()=>{
+
+    try {
+      const config={
+        headers:{
+          Authorization:`Bearer ${user.token}`
+        }
+      }
+
+      await axios.post(`/api/user/logout`,{},config)
+      
+      localStorage.removeItem('userInfo')
+      navigate('/')
+      setSelectedChat('')
+      
+      toast({
+        title:"Succesfully Logout",
+        description:"",
+        status:"success",
+        duration:5000,
+        isClosable:true,
+        position:"bottom"
+      })
+
+    } catch (error) {
+      toast({
+        title:"Failed Occured",
+        description:"Unable to logout",
+        status:"error",
+        duration:5000,
+        isClosable:true,
+        position:"bottom-right"
+      })
+    }
+
+    
   }
 
   const handleSearch=async()=>{

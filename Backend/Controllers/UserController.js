@@ -1,6 +1,5 @@
 const Asynchandler=require('express-async-handler')
 const User=require('../Models/userModel')
-const generateToken=require('../Config/generateToken')
 const bcrypt=require('bcryptjs')
 
 
@@ -28,6 +27,9 @@ const registerUser=Asynchandler(async(req,res)=>{
             password,
             picture:pic,
          })
+
+        const token=await user.generateToken()
+        // console.log(token)
          
          if(user)
          {
@@ -36,7 +38,7 @@ const registerUser=Asynchandler(async(req,res)=>{
                 name:user.name,
                 email:user.email,
                 pic:user.picture,
-                token:generateToken(user.id)
+                token
             })
         }
         else
@@ -60,6 +62,8 @@ const authUser=(Asynchandler(async(req,res)=>{
 
     const user=await User.findOne({email})
 
+    const token=await user.generateToken()
+
     if(user && (await user.matchPassword(password)))
     {
         res.status(201).json({
@@ -67,12 +71,28 @@ const authUser=(Asynchandler(async(req,res)=>{
             name:user.name,
             email:user.email,
             pic:user.picture,
-            token:generateToken(user.id)
+            token
        })
    }else{
       res.status(400)
       throw new Error('Invalid email or passsword') 
    }
+}))
+
+
+//log-out ser
+const logOut=(Asynchandler(async(req,res)=>{
+    // console.log("logout : ",req.token)
+    try{
+            req.user.tokens=req.user.tokens.filter((token)=>{
+            return token.token!==req.token
+        })
+        await req.user.save()
+        res.send()
+    }catch(e)
+    {
+        res.status(500).send(e)
+    }
 }))
 
 
@@ -114,4 +134,4 @@ const changePass=Asynchandler(async(req,res)=>{
    
 })
 
-module.exports={registerUser,authUser,allUsers ,changePass}
+module.exports={registerUser,authUser,allUsers ,changePass,logOut}

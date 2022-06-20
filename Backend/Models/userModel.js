@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
 const bcrypt=require('bcryptjs')
 const validator=require('validator')
+const jwt=require('jsonwebtoken');
 
 const userSchema=mongoose.Schema({
     name:{
@@ -26,7 +27,13 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true,
         default:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }],
 },{
     timestamps:true
 })
@@ -34,6 +41,18 @@ const userSchema=mongoose.Schema({
 userSchema.methods.matchPassword=async function(enteredPassword){  //for each user
     const user=this
     return await bcrypt.compare(enteredPassword,user.password)
+}
+
+userSchema.methods.generateToken=async function(){  // for specific user generating token
+    const user=this
+    const token=jwt.sign({_id:user.id.toString()},process.env.JWT_SECRET,{
+        expiresIn:"30d"
+    })
+
+    user.tokens=user.tokens.concat({token})
+    await user.save()
+
+    return token
 }
 
 userSchema.pre('save',async function(next){

@@ -2,6 +2,7 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, u
 import React, { useState } from 'react'
 import{useNavigate} from 'react-router-dom'
 import { schema } from '../../Config/PasswordSchema';
+import validator from 'validator';
 const axios=require('axios')
 
 const SignUp = () => {
@@ -75,7 +76,19 @@ const SignUp = () => {
             return;
         }
 
-       
+
+        if(!validator.isEmail(email))
+        {
+            toast({
+                title:"please enter a valid email",
+                status:"warning",
+                duration:5000,
+                isClosable:true,
+                position:"bottom"
+            })
+            setLoading(false)
+            return;
+        }
 
         if(password!==confirmPassword)
         {
@@ -112,6 +125,7 @@ const SignUp = () => {
             }
 
             const {data}=await axios.post('/api/user',{name,email,password,pic},config)
+            console.log("data : ",data)
 
             toast({
                 title:"Registration Successful",

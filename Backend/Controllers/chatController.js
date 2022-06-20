@@ -8,6 +8,7 @@ dotenv.config()
 
 //To access or create a new chat -POST method
 const accessChat=Asynchandler(async(req,res)=>{
+
     const{userID}=req.body
 
     if(!userID){
@@ -60,6 +61,7 @@ const accessChat=Asynchandler(async(req,res)=>{
 
 //To Fetch all the chat of the logged in user -GET method
 const fetchChat =Asynchandler(async(req,res)=>{
+
     try {
         Chat.find({users:{$elemMatch:{$eq:req.user._id}}})
         .populate('users','-password')
