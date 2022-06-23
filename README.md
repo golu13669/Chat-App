@@ -3,7 +3,7 @@ It is a full stack chatting app that uses Socket.io for real time communication 
 Client: React JS ,Chakra UI
 
 Server: Node JS, Express JS,Socket.io
-
+  
 Database: Mongo DB
 
 

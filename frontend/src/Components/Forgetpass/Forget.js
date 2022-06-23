@@ -46,9 +46,10 @@ const Forget = ({children}) => {
                     title: data.message,
                     description: "Online Chat!!",
                     status: 'warning',
-                    duration: 2000,
+                    duration: 2000,  
                     isClosable: true,
                   })
+                  
             
             }
       

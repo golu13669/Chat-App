@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {  useToast , Box} from '@chakra-ui/react';
-import { schema } from '../../Config/PasswordSchema';
+import { schema } from '../../Config/PasswordSchema'; 
 const Forgetpass = () => {
     const[password, setpassword] = useState('');
     const[confirmpassword, setconfirmpassword] = useState('');
