@@ -1,4 +1,4 @@
-                                                        Project Name : ChatApp
+                                              Project Name : ChatApp
                                                         
  This a real time chatting web Application where we can send messages and images in real time.
  
