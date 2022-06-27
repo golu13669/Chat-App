@@ -104,6 +104,7 @@ const MyChats = ({fetchAgain,loggedUser}) => {
               borderRadius='lg'
             >
               <Text key={chat._id} >
+                {console.log(chat)}
                 {!chat.isGroupChat?
                 getSender(loggedUser,chat.users)
                 :chat.chatName}
