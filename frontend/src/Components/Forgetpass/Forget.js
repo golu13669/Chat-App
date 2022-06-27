@@ -2,7 +2,7 @@ import { ViewIcon } from '@chakra-ui/icons'
 import { FormControl, FormHelperText, FormLabel, IconButton, Input, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Button,   Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
-    ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
+    ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import axios from 'axios';
 
 const Forget = ({children}) => {
@@ -49,7 +49,7 @@ const Forget = ({children}) => {
                     duration: 2000,  
                     isClosable: true,
                   })
-                  
+
             
             }
       

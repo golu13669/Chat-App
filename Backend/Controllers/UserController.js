@@ -3,6 +3,8 @@ const User=require('../Models/userModel')
 const generateToken=require('../Config/generateToken')
 const bcrypt=require('bcryptjs')
 const transporter = require('../Config/Nodemailer');
+const { schema } = require('../Middleware/PasswordSchema'); 
+const jwt =require('jsonwebtoken');
 
 
 //api/user -- POST method
@@ -20,7 +22,11 @@ const registerUser=Asynchandler(async(req,res)=>{
         res.status(400)
         throw new Error('User already exits')
    }
-
+            if(schema.validate(password)===false)
+            {
+            const mesg = schema.validate(password, { details: true })
+            res.status(400).json(mesg)
+                }
     try{
         const user=await User.create({
             name,
@@ -101,6 +107,11 @@ const changePass=Asynchandler(async(req,res)=>{
         if(password !==cpassword){
                 res.send({"message" : "new pass not match to cpass"})
         }
+        if(schema.validate(password)===false)
+            {
+            const mesg = schema.validate(password, { details: true })
+            res.status(400).json(mesg)
+                }
     else{
         const salt = await bcrypt.genSalt(10);
         const hashpass = await bcrypt.hash(password , salt);
@@ -174,6 +185,11 @@ const UseremailCheck = async(req,res)=>{
             if(password !== confirmpassword){
                 res.send({"message" : "new pass not match to cpass"})
             }
+            if(schema.validate(password)===false)
+            {
+            const mesg = schema.validate(password, { details: true })
+            res.status(400).json(mesg)
+                }
             else{
                 const salt = await bcrypt.genSalt(10);
             const hashpass = await bcrypt.hash(password , salt);

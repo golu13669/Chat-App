@@ -113,7 +113,7 @@ const Login = () => {
         colorScheme="red"
         width="100%"
       >
-        Forgot Password!
+        Forgotten password?
       </Button>
       </Forget>
     </VStack>

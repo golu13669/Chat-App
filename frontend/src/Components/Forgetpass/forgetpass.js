@@ -95,7 +95,7 @@ const Forgetpass = () => {
     }
   
   return (
-    <Box w="100%" >
+    <Box w="100%" bg="white" >
     <VStack spacing="10px"  mx="550px" mt="15%" >
       <FormControl id="password" w="100%" isRequired>
         <FormLabel>New Password</FormLabel>
